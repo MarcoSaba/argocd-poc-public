@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cubbit-react-app-deployment
+  namespace: argocd-poc-application
+  labels:
+    app: cubbit-react-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cubbit-react-app
+  template:
+    metadata:
+      name: cubbit-react-app-pod
+      labels:
+        app: cubbit-react-app
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: cubbit-react-app
+          image: "cubbit/image-compressor-argocd-poc:{{ .Chart.AppVersion }}"
+          imagePullPolicy: Always

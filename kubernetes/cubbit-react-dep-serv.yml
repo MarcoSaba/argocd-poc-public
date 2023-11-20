@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-app
+  namespace: cubbit-ns
+spec:
+  selector:
+    app: cubbit-react-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cubbit-react-app-deployment
+  namespace: cubbit-ns
+  labels: 
+    app: cubbit-react-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cubbit-react-app
+  template:
+    metadata:
+      name: cubbit-react-app-pod
+      labels:
+        app: cubbit-react-app
+    spec:
+      containers:
+        - name: cubbit-react-app
+          image: cubbit-react-app:latest
+          imagePullPolicy: Never  

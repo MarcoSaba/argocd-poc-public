@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cubbit-nginx-service
+  namespace: cubbit-ns
+spec:
+  selector:
+    app: cubbit-nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30005
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cubbit-nginx-deployment
+  namespace: cubbit-ns
+  labels:
+    app: cubbit-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cubbit-nginx
+  template:
+    metadata:
+      name: cubbit-nginx-pod
+      labels:
+        app: cubbit-nginx
+    spec:
+      containers:
+        - name: cubbit-nginx
+          image: cubbit-nginx:latest            
+          imagePullPolicy: Never
